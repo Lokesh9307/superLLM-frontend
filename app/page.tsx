@@ -8,7 +8,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-black text-white">
       <Navbar />
       <Home />
-      <div className="fixed bottom-10 left-0 w-full">
+      <div className="fixed md:bottom-0 bottom-0 left-0 w-full">
         <Footer />
       </div>
     </main>

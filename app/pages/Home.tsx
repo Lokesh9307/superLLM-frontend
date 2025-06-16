@@ -18,7 +18,7 @@ export default async function Home() {
   const email = session.user?.email ?? "";
 
   return (
-    <section className="p-6 w-full h-[70vh] flex flex-col items-center justify-center">
+    <section className="p-6 w-full h-[70vh] flex flex-col items-center justify-center mb-10">
       <h1 className="text-3xl font-bold"></h1>
       <p>Welcome, {formatUsernameAsName(email)}</p>
 
@@ -35,8 +35,9 @@ export default async function Home() {
               <p>Chat with your YouTube videos</p>
             </Link>
         </div>
+        <br />
+            <p className="text-center">More tools coming soon...</p>
       </div>
-            <p>More to come soon...</p>
     </section>
   );
 }
