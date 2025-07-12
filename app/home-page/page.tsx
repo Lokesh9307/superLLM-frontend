@@ -18,10 +18,11 @@ export default async function HomePage() {
   const email = session.user?.email ?? "";
 
   return (
-    <section className="h-auto p-5 flex md:justify-start justify-center items-center flex-wrap md:gap-5 gap-3">
+    <section className="h-auto p-5 flex flex-col md:justify-start justify-center items-center flex-wrap md:gap-5 gap-3">
       <div>
         <p>Welcome, {formatUsernameAsName(email)}</p>
       </div>
+      <br />
       {
         Tooldata.map((tool, index) => (
           <ToolCard
