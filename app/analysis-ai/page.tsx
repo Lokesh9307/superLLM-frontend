@@ -4,6 +4,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import ChartRenderer from '../components/ChartRender';
 import { ChartType } from 'chart.js';
 import { FaUpload } from 'react-icons/fa';
+import {Spinner} from "@heroui/spinner";
 
 interface ChartData {
   data: { label: string; value: number }[];
@@ -98,7 +99,7 @@ export default function AnalysisAI() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 relative">
       <form onSubmit={handleSubmit} className="space-y-4 space-x-3">
         <div className="relative flex items-center">
           <input
@@ -146,7 +147,9 @@ export default function AnalysisAI() {
         </button>
       </form>
 
-      {loading && <p className="mt-4">Processing...</p>}
+      {loading && <div className="mt-4 absolute top-[50%] right-[50%] z-[999] text-black p-10">
+        <Spinner size='lg' labelColor='primary' label='Analyzing...' variant='spinner' className='absolute top-[50%] right-[50%] z-[999]'/>
+      </div>}
 
       {chartData && (
         <div className="mt-6">
