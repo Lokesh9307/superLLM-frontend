@@ -23,7 +23,7 @@ export default async function HomePage() {
         <p>Welcome, {formatUsernameAsName(email)}</p>
       </div>
       <br />
-      <div className="flex md:flex-row flex-col gap-2 items-center justify-around flex-wrap w-full">
+      <div className="flex md:flex-row flex-col gap-5 items-center justify-around flex-wrap w-full">
         {
           Tooldata.map((tool, index) => (
             <ToolCard
