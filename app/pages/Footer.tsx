@@ -4,7 +4,7 @@ import { FaGithub } from "react-icons/fa";
 import { FaEnvelope } from "react-icons/fa";
 const Footer = () => {
   return (
-    <div className='flex flex-col items-center justify-center w-full h-auto bg-gray-900 text-white mt-4 border-t-2 ring-white rounded-xl p-1'>
+    <div className='flex flex-col items-center justify-center w-full h-auto bg-black text-white mt-4 border-t-2 ring-white rounded-xl p-1'>
       <p className='mt-10'>&copy; 2025 SuperLLM. All rights reserved.</p>
       <div>
         <h1 className='text-center'>Links to reach us:</h1>

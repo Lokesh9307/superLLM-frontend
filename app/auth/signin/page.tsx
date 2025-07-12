@@ -7,16 +7,8 @@ import Image from "next/image";
 
 export default function SignInPage() {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center gap-10 bg-gradient-to-r from-gray-800 to-gray-900 ">
-        <div className="flex items-center justify-center mb-6 bg-white text-black py-1 px-5 rounded-lg shadow-lg w-[50%]">
-          <Image src="/images/logo.png" alt="SuperLLM Logo" width={50} height={50} className="" />
-         <h1 className="md:text-3xl">
-           SuperLLM
-         </h1>
-        </div>
+    <div className="w-full h-screen flex flex-col items-center justify-center gap-10 bg-black text-white">
       <div className="flex flex-col items-center justify-center bg-black text-white p-4 ring-2 ring-white md:px-20 md:py-10 px:10 py-6 rounded-lg shadow-lg">
-
-
         <h1 className="text-3xl font-bold mb-6">Sign in</h1>
 
         <button

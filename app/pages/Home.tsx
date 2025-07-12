@@ -1,43 +1,52 @@
-// app/pages/Home.tsx
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authConfig } from "../lib/auth.config";
-import { formatUsernameAsName } from "../components/EmailFormatter";
-import Link from "next/link";
-import './style.css'; // Ensure you have a styles.css file for custom styles
-import { FaYoutube } from "react-icons/fa";
-import { FaFilePdf } from "react-icons/fa";
+'use client';
+import React from 'react';
+import '../globals.css';
+import Image from 'next/image';
+import Link from 'next/link';
+import { IoIosArrowForward } from "react-icons/io";
 
-export default async function Home() {
-  const session = await getServerSession(authConfig);
-
-  if (!session) {
-    redirect("/auth/signin");
-  }
-
-  const email = session.user?.email ?? "";
+const Home = () => {
+  const url = "https://ucarecdn.com/25c9aa63-5402-489d-9ac8-fefa13bb1cef/hero.jpg";
 
   return (
-    <section className="p-6 w-full h-[70vh] flex flex-col items-center justify-center mb-10">
-      <h1 className="text-3xl font-bold"></h1>
-      <p>Welcome, {formatUsernameAsName(email)}</p>
+    <div className="h-screen w-full flex md:flex-row flex-col items-center justify-center relative">
 
-      <div className="mt-6 w-full h-full max-w-4xl p-4 bg-gray-900 text-white rounded-lg shadow-lg">
-        <h1 className="text-center text-2xl">Tools</h1>
-        <div className="flex items-center justify-center flex-wrap gap-10 mt-4">      
-            <Link href="/pdf-chat" className="flex flex-col items-center justify-center p-4  text-black rounded-lg shadow-md transition-ring ring-2 hover:scale-110 text-center tool1 ring-[#fbf8cc]">
-              <h2 className="font-semibold flex items-center gap-2"><span className="text-2xl text-red-500"><FaFilePdf /></span> PDF Chat</h2>
-              <p>Chat with your PDF documents</p>
-            </Link>  
-
-            <Link href="/youtube-chat" className="flex flex-col items-center justify-center p-4 text-black rounded-lg shadow-md hover: transition-ring ring-2  hover:scale-110 text-center tool2 ring-[#ffa5ab]">
-              <h2 className="font-semibold flex items-center gap-2"><span className="text-2xl text-red-500"><FaYoutube /></span> YouTube Chat</h2>
-              <p>Chat with your YouTube videos</p>
-            </Link>
-        </div>
-        <br />
-            <p className="text-center">More tools coming soon...</p>
+      {/* ✅ Background Image only on mobile */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+        style={{ backgroundImage: `url(${url})` }}
+      >
+        <div className="absolute inset-0 bg-black/70" />
       </div>
-    </section>
+
+      {/* ✅ Desktop Left Space (blank or optional image) */}
+      <div className="hidden md:flex items-center justify-center">
+        <Image
+          src={url}
+          alt="Background Image"
+          className="object-cover h-full"
+          width={300}
+          height={300}
+        />
+      </div>
+
+      {/* ✅ Text Content */}
+      <div className="z-10 px-4 md:w-1/2 flex flex-col gap-3 justify-center items-center md:items-start text-center md:text-left">
+        <h1 className="md:text-5xl text-3xl font-bold text-white">𝔗𝔥𝔢 𝔣𝔲𝔱𝔲𝔯𝔢 𝔥𝔞𝔰 𝔠𝔬𝔪𝔢</h1>
+        <p className="md:text-2xl text-xl mt-4 text-white">
+          <span className="custom-gradient px-2 py-1 rounded-xl text-black">SυρҽɾLLM</span> 𝔦𝔰 𝔞 𝔭𝔩𝔞𝔱𝔣𝔬𝔯𝔪 𝔱𝔥𝔞𝔱 𝔞𝔩𝔩𝔬𝔴𝔰 𝔶𝔬𝔲 𝔱𝔬 𝔪𝔞𝔨𝔢 𝔶𝔬𝔲𝔯 𝔩𝔦𝔣𝔢 𝔰𝔪𝔞𝔯𝔱 𝔞𝔫𝔡 𝔢𝔞𝔰𝔶.
+        </p>
+        <span className="mt-5 flex items-center">
+          <Link
+            href="/home-page"
+            className="w-auto text-xl px-4 py-2 ring-2 ring-white/50 rounded-xl text-white bg-white/10 backdrop-blur"
+          >
+            Let's Explore <IoIosArrowForward className="inline ml-2" />
+          </Link>
+        </span>
+      </div>
+    </div>
   );
-}
+};
+
+export default Home;

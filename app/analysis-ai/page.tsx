@@ -1,0 +1,141 @@
+'use client';
+
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import ChartRenderer from '../components/ChartRender';
+import { ChartType } from 'chart.js';
+
+interface ChartData {
+  data: { label: string; value: number }[];
+  chartType: ChartType;
+}
+
+export default function AnalysisAI() {
+  const [file, setFile] = useState<File | null>(null);
+  const [query, setQuery] = useState('');
+  const [chartType, setChartType] = useState<ChartType>('bar');
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Restore all state from sessionStorage
+  useEffect(() => {
+    const storedQuery = sessionStorage.getItem('query');
+    const storedChartType = sessionStorage.getItem('chartType');
+    const storedChartData = sessionStorage.getItem('chartData');
+    const storedFileData = sessionStorage.getItem('fileData');
+    const storedFileName = sessionStorage.getItem('fileName');
+
+    if (storedQuery) setQuery(storedQuery);
+    if (storedChartType) setChartType(storedChartType as ChartType);
+    if (storedChartData) setChartData(JSON.parse(storedChartData));
+    if (storedFileData && storedFileName) {
+      const byteString = atob(storedFileData.split(',')[1]);
+      const mimeString = storedFileData.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      const restoredFile = new File([ab], storedFileName, { type: mimeString });
+      setFile(restoredFile);
+    }
+  }, []);
+
+  // Persist query and chartType
+  useEffect(() => {
+    sessionStorage.setItem('query', query);
+  }, [query]);
+
+  useEffect(() => {
+    sessionStorage.setItem('chartType', chartType);
+  }, [chartType]);
+
+  useEffect(() => {
+    if (chartData) {
+      sessionStorage.setItem('chartData', JSON.stringify(chartData));
+    }
+  }, [chartData]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!file) return;
+
+    try {
+      setLoading(true);
+      const form = new FormData();
+      form.append('file', file);
+      form.append('query', query);
+      form.append('chartType', chartType);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_ANALYSIS_API_URL}/api/analyze`, {
+        method: 'POST',
+        body: form,
+      });
+
+      const json = await res.json();
+      setChartData(json);
+      sessionStorage.setItem('chartData', JSON.stringify(json));
+    } catch (err) {
+      console.error('Error analyzing file:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        sessionStorage.setItem('fileData', reader.result.toString());
+        sessionStorage.setItem('fileName', selectedFile.name);
+        setFile(selectedFile);
+      }
+    };
+    reader.readAsDataURL(selectedFile);
+  };
+
+  return (
+    <div className="p-4">
+      <form onSubmit={handleSubmit} className="space-y-4 space-x-3">
+        <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
+        <input
+          type="text"
+          placeholder="Enter analysis query"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="border px-2 py-1 rounded-md"
+        />
+        <select
+          value={chartType}
+          onChange={(e) => setChartType(e.target.value as ChartType)}
+          className="border px-2 py-1 bg-black text-white rounded-md"
+        >
+          <option value="bar">Bar Chart</option>
+          <option value="line">Line Chart</option>
+          <option value="pie">Pie Chart</option>
+          <option value="doughnut">Doughnut Chart</option>
+          <option value="polarArea">Polar Area Chart</option>
+          <option value="radar">Radar Chart</option>
+          <option value="bubble">Bubble Chart</option>
+          <option value="scatter">Scatter Chart</option>
+        </select>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Analyze
+        </button>
+      </form>
+
+      {loading && <p className="mt-4">Processing...</p>}
+
+      {chartData && (
+        <div className="mt-6">
+          <ChartRenderer data={chartData.data} type={chartData.chartType} />
+        </div>
+      )}
+    </div>
+  );
+}
