@@ -4,7 +4,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import ChartRenderer from '../components/ChartRender';
 import { ChartType } from 'chart.js';
 import { FaUpload } from 'react-icons/fa';
-import {Spinner} from "@heroui/spinner";
+import { Spinner } from "@heroui/spinner";
 
 interface ChartData {
   data: { label: string; value: number }[];
@@ -117,7 +117,13 @@ export default function AnalysisAI() {
             <FaUpload size={20} />
             <span className='ml-2 text-sm'>Upload Excel file</span>
           </label>
+          {file && (
+            <span className="text-sm text-gray-800 dark:text-white truncate max-w-[250px] ml-2">
+              {file.name}
+            </span>
+          )}
         </div>
+
         <input
           type="text"
           placeholder="Enter analysis query"
@@ -148,7 +154,7 @@ export default function AnalysisAI() {
       </form>
 
       {loading && <div className="mt-4 absolute top-[50%] right-[50%] z-[999] text-black p-10">
-        <Spinner size='lg' labelColor='primary' label='Analyzing...' variant='spinner' className='absolute top-[50%] right-[50%] z-[999]'/>
+        <Spinner size='lg' labelColor='primary' label='Analyzing...' variant='spinner' className='absolute top-[50%] right-[50%] z-[999]' />
       </div>}
 
       {chartData && (
