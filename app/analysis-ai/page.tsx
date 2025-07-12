@@ -3,6 +3,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import ChartRenderer from '../components/ChartRender';
 import { ChartType } from 'chart.js';
+import { FaUpload } from 'react-icons/fa';
 
 interface ChartData {
   data: { label: string; value: number }[];
@@ -99,31 +100,47 @@ export default function AnalysisAI() {
   return (
     <div className="p-4">
       <form onSubmit={handleSubmit} className="space-y-4 space-x-3">
-        <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
+        <div className="relative flex items-center">
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleFileChange}
+            id="excel-upload"
+            className="hidden"
+          />
+          <label
+            htmlFor="excel-upload"
+            className="flex items-center justify-center w-auto px-2 py-2 h-auto rounded-md bg-green-800 ring-2 ring-white text-white cursor-pointer hover:bg-green-700 transition text-sm"
+            title="Upload Excel"
+          >
+            <FaUpload size={20} />
+            <span className='ml-2 text-sm'>Upload Excel file</span>
+          </label>
+        </div>
         <input
           type="text"
           placeholder="Enter analysis query"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="border px-2 py-1 rounded-md"
+          className="border px-2 py-1 rounded-md md:w-auto w-full"
         />
         <select
           value={chartType}
           onChange={(e) => setChartType(e.target.value as ChartType)}
           className="border px-2 py-1 bg-black text-white rounded-md"
         >
-          <option value="bar">Bar Chart</option>
-          <option value="line">Line Chart</option>
-          <option value="pie">Pie Chart</option>
-          <option value="doughnut">Doughnut Chart</option>
-          <option value="polarArea">Polar Area Chart</option>
-          <option value="radar">Radar Chart</option>
-          <option value="bubble">Bubble Chart</option>
-          <option value="scatter">Scatter Chart</option>
+          <option value="bar" className=''>Bar Chart</option>
+          <option value="line" className=''>Line Chart</option>
+          <option value="pie" className=''>Pie Chart</option>
+          <option value="doughnut" className=''>Doughnut Chart</option>
+          <option value="polarArea" className=''>Polar Area Chart</option>
+          <option value="radar" className=''>Radar Chart</option>
+          <option value="bubble" className=''>Bubble Chart</option>
+          <option value="scatter" className=''>Scatter Chart</option>
         </select>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white md:px-4 px-2 py-2 rounded hover:bg-blue-700 md:text-md text-sm transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >
           Analyze
         </button>
