@@ -150,95 +150,89 @@ export default function Dashboard() {
   };
 
   return (
-    <div ref={dashboardRef} className="relative min-h-screen bg-black font-inter text-white">
-      <nav className="flex md:flex-row flex-col justify-between items-center p-4 bg-black shadow-lg md:gap-0 gap-2">
-        <h1 className="md:text-3xl text-xl font-bold text-cyan-500">Dashboard 📊</h1>
-        <div className='flex items-center space-x-4'>
+    <div ref={dashboardRef} className="relative min-h-screen bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] font-inter text-white">
+      <nav className="flex md:flex-row flex-col justify-between items-center px-6 py-4 bg-[#121212] border-b border-white/10 shadow-xl">
+        <h1 className="text-2xl md:text-3xl font-bold text-cyan-400">AI Dashboard 📊</h1>
+        <div className="flex items-center gap-3 mt-2 md:mt-0">
           <button
             onClick={addTextBox}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-purple-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 md:text-lg text-xs"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-700 hover:bg-blue-500 text-white rounded-xl shadow-md transition-all duration-300"
           >
-            <FaTextHeight className="mr-2" /> Text Box
+            <FaTextHeight /> Add Text
           </button>
           <Link
             href='/analysis-ai'
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:bg-green-400 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 md:text-lg text-xs"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-emerald-700 hover:bg-emerald-500 text-white rounded-xl shadow-md transition-all duration-300"
           >
-            More Chart
+            More Charts
           </Link>
         </div>
       </nav>
 
-      <div className="p-4">
-        {dashboardItems.length === 0 && (
-          <div className="text-center text-gray-400 text-xl mt-20">
-            No items added yet. Add charts from the analysis page or create a text box!
-          </div>
-        )}
-
-        <ReactGridLayout
-          className="layout"
-          layout={dashboardItems.map(({ i, x, y, w, h }) => ({ i, x, y, w, h }))}
-          cols={50}
-          rowHeight={10}
-          autoSize={true}
-          width={containerWidth}
-          onLayoutChange={onLayoutChange}
-          isDroppable={false}
-          compactType="vertical"
-          preventCollision={false}
-        >
-          {dashboardItems.map((item) => (
-            <div
-              key={item.i}
-              className="relative bg-black rounded-lg shadow-md overflow-hidden flex flex-col group border border-transparent hover:border-white hover:ring-2 hover:ring-white hover:ring-opacity-40"
-            >
-              <button
-                onClick={(e) => handleDeleteItem(e, item.i)}
-                className="absolute top-1 right-1 z-10 p-1 rounded-md bg-red-600 text-white opacity-0 group-hover:opacity-100 transition duration-200"
-                title="Hold delete button and drag anywhere to delete"
+      <main className="p-6">
+        {dashboardItems.length === 0 ? (
+          <div className="text-center text-gray-500 text-xl mt-16">No items yet. Add charts or text to get started!</div>
+        ) : (
+          <ReactGridLayout
+            className="layout"
+            layout={dashboardItems.map(({ i, x, y, w, h }) => ({ i, x, y, w, h }))}
+            cols={50}
+            rowHeight={10}
+            autoSize={true}
+            width={containerWidth}
+            onLayoutChange={onLayoutChange}
+            isDroppable={false}
+            compactType="vertical"
+            preventCollision={false}
+          >
+            {dashboardItems.map((item) => (
+              <div
+                key={item.i}
+                className="relative bg-[#1e1e1e] rounded-2xl shadow-xl overflow-hidden group border border-white/10 hover:border-cyan-400 transition-all"
               >
-                <FaTrash size={16} />
-              </button>
-
-              {item.type === 'chart' && item.image && (
                 <button
-                  onClick={() => handleSaveImage(item.image, item.title)}
-                  className="absolute top-10 right-1 z-10 p-1 rounded-md bg-green-600 text-white opacity-0 group-hover:opacity-100 transition duration-200"
-                  title="Hold button and drag anywhere to save chart image"
+                  onClick={(e) => handleDeleteItem(e, item.i)}
+                  className="absolute top-2 right-2 p-1 bg-red-600 rounded-full shadow-md text-white opacity-0 group-hover:opacity-100 transition"
                 >
-                  <FaDownload size={16} />
+                  <FaTrash size={14} />
                 </button>
-              )}
 
-              <div className="flex-grow flex items-center justify-center overflow-hidden p-2">
-                {item.type === 'chart' ? (
-                  item.image ? (
-                    <div className='bg-transparent rounded-lg shadow-lg p-1 w-full h-full flex items-center justify-center'>
+                {item.type === 'chart' && item.image && (
+                  <button
+                    onClick={() => handleSaveImage(item.image, item.title)}
+                    className="absolute top-12 right-2 p-1 bg-green-600 rounded-full shadow-md text-white opacity-0 group-hover:opacity-100 transition"
+                  >
+                    <FaDownload size={14} />
+                  </button>
+                )}
+
+                <div className="flex-grow flex items-center justify-center p-4">
+                  {item.type === 'chart' ? (
+                    item.image ? (
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="max-w-full max-h-full object-cover"
+                        className="max-w-full max-h-full rounded-md object-contain"
                       />
-                    </div>
+                    ) : (
+                      <div className="text-gray-400">No chart image available</div>
+                    )
                   ) : (
-                    <div className="text-gray-500 text-center p-4">No chart image available</div>
-                  )
-                ) : (
-                  <input
-                    type="text"
-                    value={item.text}
-                    placeholder="Type your text here..."
-                    onChange={(e) => handleTextBoxChange(item.i, e.target.value)}
-                    style={{ fontSize: item.fontSize, fontFamily: item.fontFamily }}
-                    className="w-full h-full p-2 bg-black text-white resize-none focus:outline-none rounded-b-lg overflow-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent"
-                  />
-                )}
+                    <input
+                      type="text"
+                      value={item.text}
+                      placeholder="Type your note..."
+                      onChange={(e) => handleTextBoxChange(item.i, e.target.value)}
+                      style={{ fontSize: item.fontSize, fontFamily: item.fontFamily }}
+                      className="w-full h-full px-3 py-2 bg-[#1e1e1e] text-white placeholder-gray-500 rounded-md focus:outline-none"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-        </ReactGridLayout>
-      </div>
+            ))}
+          </ReactGridLayout>
+        )}
+      </main>
     </div>
   );
 }

@@ -17,10 +17,10 @@ export default async function Navbar() {
       shadow-xl rounded-2xl text-white mx-4 mt-4">
       
       {/* Left Logo Section */}
-      <div className="flex items-center space-x-3">
+      <Link href='/home-page' className="flex items-center space-x-3">
         <Image src={Logo} alt="SuperLLM Logo" width={40} height={40} />
         <h1 className="md:text-2xl text-lg font-bold">SuperLLM</h1>
-      </div>
+      </Link>
 
       {/* Right Auth Section */}
       {session ? (

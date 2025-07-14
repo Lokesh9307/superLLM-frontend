@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { sendYouTubeQuestion } from "@/utils/api";
+import { processYouTubeVideo, sendYouTubeQuestion } from "@/utils/api";
 import { formatResponse } from "@/utils/formatResponse";
 import FormattedMessage from "./FormattedMessage";
 import { FaUserAlt } from "react-icons/fa";
@@ -26,24 +26,14 @@ export default function YoutubeForm() {
     setError("");
 
     try {
-      const processRes = await fetch("http://localhost:5000/api/youtube/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url.trim() }),
-      });
+      // ✅ Call video processing API
+      const processData = await processYouTubeVideo(url.trim());
 
-      const text = await processRes.text();
-      let processData;
-      try {
-        processData = JSON.parse(text);
-      } catch {
-        throw new Error("Server returned invalid JSON: " + text.slice(0, 50));
+      if (!processData.success) {
+        throw new Error(processData.error || "Failed to process the video.");
       }
 
-      if (!processRes.ok) {
-        throw new Error(processData.error || "Failed to process video.");
-      }
-
+      // ✅ Send question to backend
       const res = await sendYouTubeQuestion(url.trim(), question.trim(), history);
 
       const newUserMessage: Message = { role: "user", content: question };
@@ -78,7 +68,7 @@ export default function YoutubeForm() {
       {/* Error message */}
       {error && (
         <div className="mb-4 text-red-600 font-semibold">
-          Your video is being processed. Please try again!
+          {error}
         </div>
       )}
 
@@ -115,7 +105,7 @@ export default function YoutubeForm() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Ask a question about the video..."
-            className="w-full lg:w-[60vw] border p-2 rounded resize-none text-white ring-1 "
+            className="w-full lg:w-[60vw] border p-2 rounded resize-none text-white ring-1"
           />
           <button
             onClick={handleSubmit}

@@ -5,6 +5,8 @@ import ChartRenderer from '../components/ChartRender';
 import { ChartType } from 'chart.js';
 import { FaUpload } from 'react-icons/fa';
 import { Spinner } from "@heroui/spinner";
+import { IoIosArrowUp } from "react-icons/io";
+
 
 interface ChartData {
   data: { label: string; value: number }[];
@@ -17,6 +19,8 @@ export default function AnalysisAI() {
   const [chartType, setChartType] = useState<ChartType>('bar');
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [formOpen, setFormOpen] = useState(true); // state for toggling
+
 
   // Restore all state from sessionStorage
   useEffect(() => {
@@ -99,66 +103,100 @@ export default function AnalysisAI() {
   };
 
   return (
-    <div className="p-4 relative">
-      <form onSubmit={handleSubmit} className="space-y-4 space-x-3">
-        <div className="relative flex items-center">
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileChange}
-            id="excel-upload"
-            className="hidden"
-          />
-          <label
-            htmlFor="excel-upload"
-            className="flex items-center justify-center w-auto px-2 py-2 h-auto rounded-md bg-green-800 ring-2 ring-white text-white cursor-pointer hover:bg-green-700 transition text-sm"
-            title="Upload Excel"
-          >
-            <FaUpload size={20} />
-            <span className='ml-2 text-sm'>Upload Excel file</span>
-          </label>
-          {file && (
-            <span className="text-sm text-gray-800 dark:text-white truncate max-w-[250px] ml-2">
-              {file.name}
-            </span>
-          )}
+    <div className="p-4 mt-4 max-w-4xl mx-auto space-y-4">
+
+      {/* Toggle Bar */}
+      <div
+        onClick={() => setFormOpen(!formOpen)}
+        className="w-full px-4 py-3 cursor-pointer bg-white/5 border border-white/10 backdrop-blur-lg rounded-lg flex items-center justify-between hover:bg-white/10 transition"
+      >
+        <h2 className="text-white text-lg font-semibold">AI Chart Analyzer</h2>
+        <span className="text-sm text-gray-300">{formOpen ? 'Hide': 'Show'}</span>
+      </div>
+
+      {/* Form Area */}
+      {formOpen && (
+        <div className="p-6 rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-md transition-all duration-300 ease-in-out">
+          <form onSubmit={handleSubmit} className="space-y-6">
+
+            {/* Row 1: Upload Button */}
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                type="file"
+                accept=".xlsx,.xls"
+                onChange={handleFileChange}
+                id="excel-upload"
+                className="hidden"
+              />
+              <label
+                htmlFor="excel-upload"
+                className="flex items-center px-4 py-2 bg-green-700 text-white rounded-lg shadow-sm hover:bg-green-600 transition cursor-pointer text-sm"
+              >
+                <FaUpload className="mr-2" />
+                Upload Excel
+              </label>
+              {file && (
+                <span className="text-sm text-white truncate max-w-[180px]">
+                  {file.name}
+                </span>
+              )}
+            </div>
+
+            {/* Row 2: Query + Chart Type */}
+            <div className="flex flex-wrap md:flex-nowrap gap-4 items-center w-full">
+              <input
+                type="text"
+                placeholder="Enter your analysis query"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="flex-1 px-4 py-2 bg-black border border-white/10 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <select
+                value={chartType}
+                onChange={(e) => setChartType(e.target.value as ChartType)}
+                className="w-full md:w-40 px-4 py-2 bg-black border border-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="bar">Bar</option>
+                <option value="line">Line</option>
+                <option value="pie">Pie</option>
+                <option value="doughnut">Doughnut</option>
+                <option value="polarArea">Polar Area</option>
+                <option value="radar">Radar</option>
+                <option value="bubble">Bubble</option>
+                <option value="scatter">Scatter</option>
+              </select>
+            </div>
+
+            {/* Row 3: Analyze Button */}
+            <div className="flex">
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                Analyze
+              </button>
+            </div>
+          </form>
         </div>
+      )}
 
-        <input
-          type="text"
-          placeholder="Enter analysis query"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="border px-2 py-1 rounded-md md:w-auto w-full"
-        />
-        <select
-          value={chartType}
-          onChange={(e) => setChartType(e.target.value as ChartType)}
-          className="border px-2 py-1 bg-black text-white rounded-md"
-        >
-          <option value="bar" className=''>Bar Chart</option>
-          <option value="line" className=''>Line Chart</option>
-          <option value="pie" className=''>Pie Chart</option>
-          <option value="doughnut" className=''>Doughnut Chart</option>
-          <option value="polarArea" className=''>Polar Area Chart</option>
-          <option value="radar" className=''>Radar Chart</option>
-          <option value="bubble" className=''>Bubble Chart</option>
-          <option value="scatter" className=''>Scatter Chart</option>
-        </select>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white md:px-4 px-2 py-2 rounded hover:bg-blue-700 md:text-md text-sm transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          Analyze
-        </button>
-      </form>
+      {/* Loading Spinner */}
+      {loading && (
+        <div className="absolute inset-0 flex justify-center items-center bg-black/30 z-50 rounded-xl">
+          <Spinner
+            size="lg"
+            label="Analyzing..."
+            labelColor="primary"
+            variant="spinner"
+            className="text-white"
+          />
+        </div>
+      )}
 
-      {loading && <div className="mt-4 absolute top-[50%] right-[50%] z-[999] text-black p-10">
-        <Spinner size='lg' labelColor='primary' label='Analyzing...' variant='spinner' className='absolute top-[50%] right-[50%] z-[999]' />
-      </div>}
-
+      {/* Chart Output */}
       {chartData && (
-        <div className="mt-6">
+        <div className="mt-20">
           <ChartRenderer data={chartData.data} type={chartData.chartType} />
         </div>
       )}

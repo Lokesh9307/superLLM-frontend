@@ -1,48 +1,30 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:5000/api";
+const PDF_API = `${process.env.NEXT_PUBLIC_PDF_QNA_API}/api/pdf`;
 
-// Existing PDF functions
+// 🧾 PDF QnA
+
 export const sendPdfQuestion = async (pdf: File, question: string) => {
   const formData = new FormData();
   formData.append("pdf", pdf);
   formData.append("question", question);
 
-  const res = await axios.post(`${API_BASE}/pdf/upload`, formData);
+  const res = await axios.post(`${PDF_API}/upload`, formData);
   return res.data;
 };
 
+// 📺 YouTube QnA
 
+const YT_API = `${process.env.NEXT_PUBLIC_YOUTUBEAI_API_KEY}/api/youtube`;
 
 export const processYouTubeVideo = async (url: string) => {
-  const res = await axios.post(`${API_BASE}/youtube/process`, { url });
+  const res = await axios.post(`${YT_API}/process`, { url });
   return res.data;
 };
 
-
-
-export const checkVideoCaptions = async (url: string) => {
-  const res = await axios.post(`${API_BASE}/youtube/process`, { url });
+export const sendYouTubeQuestion = async (url: string, question: string, history: any[]) => {
+  const res = await axios.post(`${YT_API}/chat`, { url, question, history });
   return res.data;
 };
-
-
-
-// frontend/utils/api.ts
-
-export async function sendYouTubeQuestion(url: string, question: string, history: any[]) {
-  const response = await fetch("http://localhost:5000/api/youtube/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url, question, history }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Chat error: ${errorText}`);
-  }
-
-  return await response.json();
-}
 
 

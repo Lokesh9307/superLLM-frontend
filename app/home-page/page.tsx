@@ -1,42 +1,29 @@
-// app/pages/Home.tsx
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authConfig } from "../lib/auth.config";
-import { formatUsernameAsName } from "../components/EmailFormatter";
 import './style.css';
 import '../globals.css';
-import ToolCard from "../components/ToolCard";
 import Tooldata from "@/utils/toolData";
+import AIToolCard from "../components/ToolCard";
 
-export default async function HomePage() {
-  const session = await getServerSession(authConfig);
-
-  if (!session) {
-    redirect("/auth/signin");
-  }
-
-  const email = session.user?.email ?? "";
-
+export default function HomePage() {
   return (
-    <section className="h-auto p-5 flex flex-col md:justify-start justify-center items-center flex-wrap md:gap-5 gap-3">
-      <div>
-        <p>Welcome, {formatUsernameAsName(email)}</p>
+    <main className="min-h-screen w-full bg-black px-6 py-12 text-white">
+      <div className="max-w-6xl mx-auto text-center mb-12">
+        <h1 className="text-4xl font-bold">AI Tools</h1>
+        <p className="text-lg text-gray-400 mt-2">
+          Supercharge your workflow with intelligent tools
+        </p>
       </div>
-      <br />
-      <div className="flex md:flex-row flex-col gap-5 items-center justify-around flex-wrap w-full">
-        {
-          Tooldata.map((tool, index) => (
-            <ToolCard
-              key={index}
-              urlPath={tool.urlPath}
-              icon={tool.icon}
-              title={tool.title}
-              image={tool.image}
-              descriprion={tool.description}
-            />
-          ))
-        }
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {Tooldata.map((tool, index) => (
+          <AIToolCard
+            key={index}
+            icon={tool.icon}
+            title={tool.title}
+            description={tool.description}
+            urlPath={tool.urlPath}
+          />
+        ))}
       </div>
-    </section>
+    </main>
   );
 }
