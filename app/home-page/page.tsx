@@ -2,8 +2,18 @@ import './style.css';
 import '../globals.css';
 import Tooldata from "@/utils/toolData";
 import AIToolCard from "../components/ToolCard";
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { authConfig } from '../lib/auth.config';
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Uncomment when auth is needed
+   const session = await getServerSession(authConfig);
+
+  if (!session) {
+    redirect("/auth/signin");
+  }
+
   return (
     <main className="min-h-screen w-full bg-black px-6 py-12 text-white">
       <div className="max-w-6xl mx-auto text-center mb-12">
