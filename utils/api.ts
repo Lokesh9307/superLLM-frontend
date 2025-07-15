@@ -1,30 +1,41 @@
+// api.ts - UPDATED (core service file)
 import axios from "axios";
 
-const PDF_API = `${process.env.NEXT_PUBLIC_PDF_QNA_API}/api/pdf`;
+const API_BASE = process.env.NEXT_PUBLIC_PDFAI_API_URL;
 
-// 🧾 PDF QnA
-
+// Send PDF + question using multipart/form-data
 export const sendPdfQuestion = async (pdf: File, question: string) => {
   const formData = new FormData();
   formData.append("pdf", pdf);
   formData.append("question", question);
 
-  const res = await axios.post(`${PDF_API}/upload`, formData);
-  return res.data;
+  console.log("Sending to:", `${API_BASE}/api/chat/upload`);
+
+  const response = await axios
+    .post(`${API_BASE}/api/chat/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .catch((err) => {
+      console.error("API Error:", err.response?.data || err.message);
+      throw err;
+    });
+
+  return response.data;
 };
 
-// 📺 YouTube QnA
 
-const YT_API = `${process.env.NEXT_PUBLIC_YOUTUBEAI_API_KEY}/api/youtube`;
-
+// YouTube functions (can remove if not needed)
 export const processYouTubeVideo = async (url: string) => {
-  const res = await axios.post(`${YT_API}/process`, { url });
+  const res = await axios.post(`${API_BASE}/api/youtube/process`, { url });
   return res.data;
 };
 
-export const sendYouTubeQuestion = async (url: string, question: string, history: any[]) => {
-  const res = await axios.post(`${YT_API}/chat`, { url, question, history });
+export const sendYouTubeQuestion = async (url: string, question: string) => {
+  const res = await axios.post(`${API_BASE}/api/youtube/chat`, {
+    url,
+    question,
+  });
   return res.data;
 };
-
-
