@@ -15,7 +15,7 @@ export default function ChatBox({ domain }: { domain: string }) {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    const response = await sendYouTubeQuestion(domain, input, []);
+    const response = await sendYouTubeQuestion(domain, input);
     const botMessage = { text: response.answer, isUser: false };
     setMessages(prev => [...prev, botMessage]);
   };

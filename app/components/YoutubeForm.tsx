@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { processYouTubeVideo, sendYouTubeQuestion } from "@/utils/api";
-import { formatResponse } from "@/utils/formatResponse";
+import { removeThoughtTags } from "@/utils/formatResponse";
 import FormattedMessage from "./FormattedMessage";
 import { FaUserAlt } from "react-icons/fa";
 import { RiRobot3Fill } from "react-icons/ri";
@@ -34,12 +34,12 @@ export default function YoutubeForm() {
       }
 
       // ✅ Send question to backend
-      const res = await sendYouTubeQuestion(url.trim(), question.trim(), history);
+      const res = await sendYouTubeQuestion(url.trim(), question.trim());
 
       const newUserMessage: Message = { role: "user", content: question };
       const newAssistantMessage: Message = {
         role: "assistant",
-        content: formatResponse(res.answer) || "No answer received.",
+        content: removeThoughtTags(res.answer) || "No answer received.",
       };
 
       setHistory((prev) => [...prev, newUserMessage, newAssistantMessage]);
