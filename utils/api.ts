@@ -9,8 +9,6 @@ export const sendPdfQuestion = async (pdf: File, question: string) => {
   formData.append("pdf", pdf);
   formData.append("question", question);
 
-  console.log("Sending to:", `${API_BASE}/api/chat/upload`);
-
   const response = await axios
     .post(`${API_BASE}/api/chat/upload`, formData, {
       headers: {
