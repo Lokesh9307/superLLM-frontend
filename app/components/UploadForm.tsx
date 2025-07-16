@@ -43,8 +43,8 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white font-sans px-4 py-10">
-      <div className="relative flex flex-col w-full max-w-3xl min-h-full bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/10 overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-auto bg-black text-white font-sans px-4 py-10">
+      <div className="relative flex flex-col w-full max-w-3xl min-h-auto bg-white/10 backdrop-blur-xl rounded-xl shadow-2xl border border-white/10 overflow-hidden">
 
         <div className="flex justify-center p-4 border-b border-white/10 bg-white/5">
           <label htmlFor="pdf-upload" className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-black hover:ring-white/70 rounded-full transition-all text-sm font-medium ring-1 ring-white/30 text-white">
