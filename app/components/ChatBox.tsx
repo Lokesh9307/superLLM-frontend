@@ -2,7 +2,7 @@
 
 // import { useState } from 'react';
 // import MessageBubble from './MessageBubble';
-// import { sendYouTubeQuestion } from '@/utils/api';
+// import { askYouTubeQuestion } from '@/utils/api';
 
 // export default function ChatBox({ domain }: { domain: string }) {
 //   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
@@ -15,8 +15,8 @@
 //     setMessages(prev => [...prev, userMessage]);
 //     setInput('');
 
-//     const response = await sendYouTubeQuestion(domain, input);
-//     const botMessage = { text: response.answer, isUser: false };
+//     const response = await askYouTubeQuestion(domain, input);
+//     const botMessage = { text: response, isUser: false };
 //     setMessages(prev => [...prev, botMessage]);
 //   };
 
