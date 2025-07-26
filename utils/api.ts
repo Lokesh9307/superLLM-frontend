@@ -25,12 +25,12 @@ export const sendPdfQuestion = async (pdf: File, question: string) => {
 
 
 // Youtube Chat API
-export async function askYouTubeQuestion(youtubeUrl: string, question: string): Promise<string> {
-  const response = await axios.post('http://localhost:5000/youtube/chat', {
-    youtubeUrl,
-    question
-  });
+// export async function askYouTubeQuestion(youtubeUrl: string, question: string): Promise<string> {
+//   const response = await axios.post('http://localhost:5000/youtube/chat', {
+//     youtubeUrl,
+//     question
+//   });
 
-  return response.data.answer;
-}
+//   return response.data.answer;
+// }
 
