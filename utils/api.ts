@@ -24,16 +24,13 @@ export const sendPdfQuestion = async (pdf: File, question: string) => {
 };
 
 
-// YouTube functions (can remove if not needed)
-export const processYouTubeVideo = async (url: string) => {
-  const res = await axios.post(`${API_BASE}/api/youtube/process`, { url });
-  return res.data;
-};
-
-export const sendYouTubeQuestion = async (url: string, question: string) => {
-  const res = await axios.post(`${API_BASE}/api/youtube/chat`, {
-    url,
-    question,
+// Youtube Chat API
+export async function askYouTubeQuestion(youtubeUrl: string, question: string): Promise<string> {
+  const response = await axios.post('http://localhost:5000/youtube/chat', {
+    youtubeUrl,
+    question
   });
-  return res.data;
-};
+
+  return response.data.answer;
+}
+
