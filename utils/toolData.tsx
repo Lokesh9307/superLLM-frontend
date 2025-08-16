@@ -19,7 +19,7 @@ const Tooldata = [
     urlPath: "/analysis-ai-service",
     icon: <VscGraph className="text-blue-400 text-3xl" />,
     title: "Analysis AI",
-    description: "AI Analysis tool",
+    description: "Automate the creation of chart by uploading excel files and create dashboards",
   },
   {
     urlPath: "/diagnosis-ai",
