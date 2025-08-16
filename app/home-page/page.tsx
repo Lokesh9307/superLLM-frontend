@@ -8,11 +8,11 @@ import { authConfig } from '../lib/auth.config';
 
 export default async function HomePage() {
   // Uncomment when auth is needed
-  //  const session = await getServerSession(authConfig);
+   const session = await getServerSession(authConfig);
 
-  // if (!session) {
-  //   redirect("/auth/signin");
-  // }
+  if (!session) {
+    redirect("/auth/signin");
+  }
 
   return (
     <main className="min-h-screen w-full bg-black px-6 py-12 text-white">
