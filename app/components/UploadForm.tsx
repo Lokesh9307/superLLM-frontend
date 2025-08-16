@@ -36,7 +36,7 @@ export default function UploadForm() {
     } catch {
       setMessages(prev => [
         ...prev,
-        { role: "assistant", content: "⚠️ Error processing your request." },
+        { role: "assistant", content: "Your file does not content relevant data based on your query" },
       ]);
     } finally {
       setLoading(false);
@@ -44,7 +44,7 @@ export default function UploadForm() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex justify-center p-4">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gray-800/10 rounded-full blur-3xl"></div>
@@ -52,9 +52,9 @@ export default function UploadForm() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-600/5 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative w-full max-w-4xl h-[80vh] flex flex-col bg-gray-900/80 backdrop-blur-2xl border border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-6xl h-[80vh] flex flex-col bg-gray-900/80 backdrop-blur-2xl border border-gray-800 rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex flex-col items-center p-6 bg-gray-800/50 border-b border-gray-700">
+        <div className="flex flex-col items-center p-3 bg-gray-800/50 border-b border-gray-700">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-gray-700 rounded-xl">
               <HiSparkles className="text-gray-300 text-xl" />
@@ -129,10 +129,10 @@ export default function UploadForm() {
                 
                 {/* Message */}
                 <div className={`flex-1 max-w-[80%] ${msg.role === "user" ? "text-right" : "text-left"}`}>
-                  <div className={`inline-block p-4 rounded-2xl ${
+                  <div className={`inline-block rounded-2xl ${
                     msg.role === "user" 
                       ? 'bg-gray-700 text-gray-200 rounded-br-md' 
-                      : 'bg-gray-800 border border-gray-700 text-gray-200 rounded-bl-md'
+                      : 'bg-gray-800 text-gray-200 rounded-bl-md'
                   }`}>
                     <MessageBubble
                       text={msg.content}
@@ -154,7 +154,7 @@ export default function UploadForm() {
                 <BsRobot className="text-gray-300 text-lg" />
               </div>
               <div className="flex-1 max-w-[80%]">
-                <div className="inline-block p-4 rounded-2xl rounded-bl-md bg-gray-800 border border-gray-700">
+                <div className="inline-block p-4 rounded-2xl rounded-bl-md bg-gray-800">
                   <div className="flex items-center gap-2 text-gray-400">
                     <div className="flex gap-1">
                       <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
