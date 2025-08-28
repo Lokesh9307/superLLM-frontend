@@ -4,7 +4,7 @@ const AanalysisAI = () => {
     return (
         <>
             <iframe
-                src="https://analysis-ai-frontend.vercel.app/"
+                src={process.env.NEXT_PUBLIC_ANALYSIS_AI_URL}
                 style={{
                     width: "100%",
                     height: "100vh",

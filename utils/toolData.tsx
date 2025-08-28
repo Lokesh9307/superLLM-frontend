@@ -1,6 +1,7 @@
 import { FaYoutube, FaFilePdf } from "react-icons/fa";
 import { VscGraph } from "react-icons/vsc";
 import { MdLocalHospital } from "react-icons/md";
+import { GiCircuitry } from "react-icons/gi";
 
 const Tooldata = [
   {
@@ -25,6 +26,12 @@ const Tooldata = [
     urlPath: "/diagnosis-ai",
     icon: <MdLocalHospital className="text-green-400 text-3xl" />,
     title: "Diagnosis AI",
+    description: "AI-powered symptom and medical report analysis",
+  },
+  {
+    urlPath: "/circuit-ai",
+    icon: <GiCircuitry className="text-shadow-purple-700 text-3xl" />,
+    title: "Circuit AI",
     description: "AI-powered symptom and medical report analysis",
   },
 ];

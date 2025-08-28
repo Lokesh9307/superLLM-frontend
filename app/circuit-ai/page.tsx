@@ -1,10 +1,10 @@
 import React from 'react'
 
-const DiagnosisAI = () => {
-    return (
-        <>
+const page = () => {
+  return (
+     <>
             <iframe
-                src={process.env.NEXT_PUBLIC_DIAGNOSIS_AI_URL}
+                src={process.env.NEXT_PUBLIC_CIRCUIT_AI_URL}
                 allow="geolocation"
                 style={{
                     width: '100%',
@@ -14,7 +14,7 @@ const DiagnosisAI = () => {
                 }}
             />
         </>
-    )
+  )
 }
 
-export default DiagnosisAI
+export default page
